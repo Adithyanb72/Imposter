@@ -1,0 +1,13 @@
+*.apk
+*.aab
+build/
+app/build/
+out/
+.gradle/
+jdk17/
+gradle-temp/
+local.properties
+.idea/
+*.iml
+.DS_Store
+*.log
