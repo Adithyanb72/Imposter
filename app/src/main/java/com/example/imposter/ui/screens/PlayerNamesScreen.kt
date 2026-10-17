@@ -14,8 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.imposter.ui.theme.AppBackground
+import com.example.imposter.ui.theme.AppPrimary
+import com.example.imposter.ui.theme.AppSecondaryText
+import com.example.imposter.ui.theme.AppSurface
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayerNamesScreen(
     playerCount: Int,
@@ -36,8 +39,10 @@ fun PlayerNamesScreen(
         }
     }
     
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    
     val backgroundGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFF1A1A2E), Color(0xFF16213E), Color(0xFF0F3460))
+        colors = listOf(AppBackground, Color(0xFF1F1F1F))
     )
 
     Column(
@@ -51,7 +56,7 @@ fun PlayerNamesScreen(
         Text(
             text = "Enter Player Names",
             color = Color.White,
-            style = MaterialTheme.typography.headlineSmall,
+            style = MaterialTheme.typography.headlineLarge,
             modifier = Modifier.padding(vertical = 16.dp)
         )
 
@@ -59,9 +64,10 @@ fun PlayerNamesScreen(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             itemsIndexed(playerNames) { index, name ->
+                val isEmpty = name.trim().isEmpty()
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
@@ -70,29 +76,36 @@ fun PlayerNamesScreen(
                         value = name,
                         onValueChange = { newName ->
                             playerNames[index] = newName
+                            if (errorMessage != null) errorMessage = null
                         },
                         label = { Text("Player ${index + 1}") },
                         placeholder = { Text("Enter name for Player ${index + 1}") },
                         singleLine = true,
                         modifier = Modifier.weight(1f),
+                        isError = errorMessage != null && isEmpty,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFFFFD700),
-                            unfocusedBorderColor = Color.Gray,
-                            focusedLabelColor = Color(0xFFFFD700),
-                            unfocusedLabelColor = Color.Gray,
-                            cursorColor = Color(0xFFFFD700),
+                            focusedBorderColor = if (errorMessage != null && isEmpty) Color(0xFFFF5252) else AppPrimary,
+                            unfocusedBorderColor = if (errorMessage != null && isEmpty) Color(0xFFFF5252) else Color(0xFF333333),
+                            focusedLabelColor = if (errorMessage != null && isEmpty) Color(0xFFFF5252) else AppPrimary,
+                            unfocusedLabelColor = AppSecondaryText,
+                            cursorColor = AppPrimary,
                             focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.LightGray
+                            unfocusedTextColor = Color.White,
+                            focusedContainerColor = AppSurface,
+                            unfocusedContainerColor = AppSurface
                         ),
                         shape = RoundedCornerShape(12.dp)
                     )
                     if (playerNames.size > 4) {
                         Spacer(modifier = Modifier.width(8.dp))
                         IconButton(
-                            onClick = { playerNames.removeAt(index) },
+                            onClick = { 
+                                playerNames.removeAt(index) 
+                                if (errorMessage != null) errorMessage = null
+                            },
                             modifier = Modifier.size(48.dp)
                         ) {
-                            Text(text = "❌", fontSize = 16.sp)
+                            Text(text = "✕", fontSize = 16.sp, color = Color(0xFFFF5252))
                         }
                     }
                 }
@@ -100,41 +113,55 @@ fun PlayerNamesScreen(
 
             item {
                 if (playerNames.size < 15) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
                     OutlinedButton(
                         onClick = { playerNames.add("") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(48.dp),
+                            .height(50.dp),
                         shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFFFFD700))
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = AppPrimary),
+                        border = ButtonDefaults.outlinedButtonBorder.copy(brush = Brush.linearGradient(listOf(AppPrimary, AppPrimary)))
                     ) {
-                        Text(text = "+ Add Player", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(text = "+ Add Player", fontSize = 15.sp, fontWeight = FontWeight.Medium)
                     }
                 }
             }
         }
         
+        if (errorMessage != null) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = errorMessage ?: "",
+                color = Color(0xFFFF5252),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium
+            )
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
         
         Button(
             onClick = { 
-                val finalNames = playerNames.mapIndexed { index, name -> 
-                    val trimmed = name.trim()
-                    if (trimmed.isEmpty()) "Player ${index + 1}" else trimmed
+                val emptyIndex = playerNames.indexOfFirst { it.trim().isEmpty() }
+                if (emptyIndex != -1) {
+                    errorMessage = "Please enter name for Player ${emptyIndex + 1}"
+                } else {
+                    errorMessage = null
+                    val finalNames = playerNames.map { it.trim() }
+                    onStartGameClick(finalNames)
                 }
-                onStartGameClick(finalNames) 
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFE94560),
-                contentColor = Color.White
+                containerColor = AppPrimary,
+                contentColor = AppBackground
             )
         ) {
-            Text(text = "GAME READY", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "GAME READY", fontSize = 16.sp, fontWeight = FontWeight.Medium)
         }
     }
 }

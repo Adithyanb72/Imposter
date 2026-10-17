@@ -1,5 +1,6 @@
 package com.example.imposter.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.imposter.ui.theme.AppBackground
+import com.example.imposter.ui.theme.AppPrimary
+import com.example.imposter.ui.theme.AppSecondaryText
+import com.example.imposter.ui.theme.AppSurface
 
 data class TutorialStep(
     val stepNumber: Int,
@@ -28,7 +33,7 @@ fun HowToPlayScreen(
     onBackClick: () -> Unit
 ) {
     val backgroundGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFF1F1F1F), Color(0xFF121212))
+        colors = listOf(AppBackground, Color(0xFF1F1F1F))
     )
 
     val steps = listOf(
@@ -85,7 +90,7 @@ fun HowToPlayScreen(
     ) {
         Text(
             text = "📖 HOW TO PLAY",
-            color = Color(0xFFFFD700),
+            color = AppPrimary,
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(vertical = 16.dp)
         )
@@ -99,7 +104,8 @@ fun HowToPlayScreen(
             itemsIndexed(steps) { _, step ->
                 Card(
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFF222222)),
+                    colors = CardDefaults.cardColors(containerColor = AppSurface),
+                    border = BorderStroke(1.dp, Color(0x33A2FF00)),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(
@@ -112,15 +118,15 @@ fun HowToPlayScreen(
                         ) {
                             Surface(
                                 shape = RoundedCornerShape(8.dp),
-                                color = Color(0xFFF25623),
+                                color = AppPrimary,
                                 modifier = Modifier.size(32.dp)
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Text(
                                         text = "${step.stepNumber}",
-                                        color = Color.White,
+                                        color = AppBackground,
                                         fontWeight = FontWeight.Bold,
-                                         fontSize = 16.sp
+                                        fontSize = 16.sp
                                     )
                                 }
                             }
@@ -129,26 +135,26 @@ fun HowToPlayScreen(
                                 Text(
                                     text = step.titleEn,
                                     color = Color.White,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Medium
                                 )
                                 Text(
                                     text = step.titleMl,
-                                    color = Color(0xFFFFD700),
-                                    fontSize = 14.sp,
+                                    color = AppPrimary,
+                                    fontSize = 13.sp,
                                     fontWeight = FontWeight.Medium
                                 )
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(10.dp))
 
                         Text(
                             text = step.descEn,
-                            color = Color.LightGray,
+                            color = AppSecondaryText,
                             fontSize = 14.sp
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = step.descMl,
                             color = Color.White,
@@ -167,9 +173,9 @@ fun HowToPlayScreen(
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE94560))
+            colors = ButtonDefaults.buttonColors(containerColor = AppPrimary, contentColor = AppBackground)
         ) {
-            Text(text = "BACK TO HOME", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "BACK TO HOME", fontSize = 16.sp, fontWeight = FontWeight.Medium)
         }
     }
 }

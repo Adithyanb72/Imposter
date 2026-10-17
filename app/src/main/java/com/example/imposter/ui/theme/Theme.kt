@@ -11,13 +11,16 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = AppOrange,
-    onPrimary = Color.White,
-    secondary = AppGold,
-    background = AppBlack,
-    surface = AppDarkSurface,
-    onBackground = Color.White,
-    onSurface = Color.White
+    primary = AppPrimary,
+    onPrimary = Color(0xFF161616),
+    secondary = AppPrimary,
+    background = AppBackground,
+    surface = AppSurface,
+    onBackground = AppTextWhite,
+    onSurface = AppTextWhite,
+    surfaceVariant = AppSurface,
+    onSurfaceVariant = AppSecondaryText,
+    outline = AppBorder
 )
 
 @Composable
@@ -30,7 +33,7 @@ fun ImposterTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = AppBlack.toArgb()
+            window.statusBarColor = AppBackground.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
         }
     }

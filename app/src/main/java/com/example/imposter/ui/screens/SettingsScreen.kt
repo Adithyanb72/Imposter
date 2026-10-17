@@ -1,5 +1,6 @@
 package com.example.imposter.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,6 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.imposter.ui.theme.AppBackground
+import com.example.imposter.ui.theme.AppPrimary
+import com.example.imposter.ui.theme.AppSecondaryText
+import com.example.imposter.ui.theme.AppSurface
 
 @Composable
 fun SettingsScreen(
@@ -34,7 +39,7 @@ fun SettingsScreen(
     onBackClick: () -> Unit
 ) {
     val backgroundGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFF1A1A2E), Color(0xFF16213E), Color(0xFF0F3460))
+        colors = listOf(AppBackground, Color(0xFF1F1F1F))
     )
     val scrollState = rememberScrollState()
 
@@ -48,7 +53,7 @@ fun SettingsScreen(
     ) {
         Text(
             text = "⚙ SETTINGS",
-            color = Color(0xFFFFD700),
+            color = AppPrimary,
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.padding(vertical = 16.dp)
         )
@@ -120,9 +125,9 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE94560))
+            colors = ButtonDefaults.buttonColors(containerColor = AppPrimary, contentColor = AppBackground)
         ) {
-            Text(text = "SAVE & BACK", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(text = "SAVE & BACK", fontSize = 16.sp, fontWeight = FontWeight.Medium)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -133,7 +138,8 @@ fun SettingsScreen(
 fun SettingSwitchItem(title: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x33FFFFFF)),
+        colors = CardDefaults.cardColors(containerColor = AppSurface),
+        border = BorderStroke(1.dp, Color(0x33A2FF00)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
@@ -146,15 +152,17 @@ fun SettingSwitchItem(title: String, checked: Boolean, onCheckedChange: (Boolean
             Text(
                 text = title,
                 color = Color.White,
-                fontSize = 16.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Medium
             )
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = Color(0xFFFFD700),
-                    checkedTrackColor = Color(0xFFE94560)
+                    checkedThumbColor = AppBackground,
+                    checkedTrackColor = AppPrimary,
+                    uncheckedThumbColor = AppSecondaryText,
+                    uncheckedTrackColor = Color(0xFF333333)
                 )
             )
         }
@@ -173,7 +181,8 @@ fun SettingDropdownItem(
 
     Card(
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0x33FFFFFF)),
+        colors = CardDefaults.cardColors(containerColor = AppSurface),
+        border = BorderStroke(1.dp, Color(0x33A2FF00)),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
@@ -184,7 +193,7 @@ fun SettingDropdownItem(
             Text(
                 text = title,
                 color = Color.White,
-                fontSize = 16.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Medium
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -201,10 +210,12 @@ fun SettingDropdownItem(
                         .menuAnchor()
                         .fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor = Color(0xFFFFD700),
-                        unfocusedBorderColor = Color.Gray,
+                        focusedBorderColor = AppPrimary,
+                        unfocusedBorderColor = Color(0xFF333333),
                         focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
+                        unfocusedTextColor = Color.White,
+                        focusedContainerColor = AppBackground,
+                        unfocusedContainerColor = AppBackground
                     ),
                     shape = RoundedCornerShape(12.dp)
                 )

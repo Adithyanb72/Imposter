@@ -1,5 +1,6 @@
 package com.example.imposter.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.imposter.model.Player
+import com.example.imposter.ui.theme.AppBackground
+import com.example.imposter.ui.theme.AppPrimary
+import com.example.imposter.ui.theme.AppSecondaryText
+import com.example.imposter.ui.theme.AppSurface
 
 @Composable
 fun ImposterRevealScreen(
@@ -23,7 +28,7 @@ fun ImposterRevealScreen(
     onNewGame: () -> Unit
 ) {
     val backgroundGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFF171717), Color(0xFF0F0F0F))
+        colors = listOf(AppBackground, Color(0xFF1F1F1F))
     )
 
     Column(
@@ -35,8 +40,8 @@ fun ImposterRevealScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "🔥 GAME RESULT 🔥",
-            color = Color(0xFFF25623),
+            text = "🔥 GAME RESULT",
+            color = AppPrimary,
             style = MaterialTheme.typography.headlineLarge
         )
 
@@ -45,7 +50,8 @@ fun ImposterRevealScreen(
         // Secret Word Card
         Card(
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFF222222)),
+            colors = CardDefaults.cardColors(containerColor = AppSurface),
+            border = BorderStroke(1.dp, Color(0x33A2FF00)),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
@@ -56,7 +62,7 @@ fun ImposterRevealScreen(
             ) {
                 Text(
                     text = "Secret Word",
-                    color = Color.LightGray,
+                    color = AppSecondaryText,
                     fontSize = 14.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -74,7 +80,8 @@ fun ImposterRevealScreen(
         // Imposter Card
         Card(
             shape = RoundedCornerShape(20.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFD32F2F)),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFFF5252).copy(alpha = 0.2f)),
+            border = BorderStroke(1.dp, Color(0xFFFF5252)),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(
@@ -85,7 +92,7 @@ fun ImposterRevealScreen(
             ) {
                 Text(
                     text = "The Imposter Was",
-                    color = Color.White,
+                    color = Color(0xFFFF5252),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -107,9 +114,9 @@ fun ImposterRevealScreen(
                 .fillMaxWidth()
                 .height(52.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF25623))
+            colors = ButtonDefaults.buttonColors(containerColor = AppPrimary, contentColor = AppBackground)
         ) {
-            Text(text = "🔄 CONTINUE (SAME PLAYERS)", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(text = "🔄  CONTINUE (SAME PLAYERS)", fontSize = 15.sp, fontWeight = FontWeight.Medium)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -120,9 +127,10 @@ fun ImposterRevealScreen(
                 .fillMaxWidth()
                 .height(52.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF222222))
+            colors = ButtonDefaults.buttonColors(containerColor = AppSurface, contentColor = Color.White),
+            border = BorderStroke(1.dp, Color(0x33A2FF00))
         ) {
-            Text(text = "➕ ADD & EDIT PLAYERS", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            Text(text = "➕  ADD & EDIT PLAYERS", fontSize = 15.sp, fontWeight = FontWeight.Medium)
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -133,9 +141,10 @@ fun ImposterRevealScreen(
                 .fillMaxWidth()
                 .height(52.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+            border = BorderStroke(1.dp, Color(0xFF333333))
         ) {
-            Text(text = "🏠 NEW GAME", fontSize = 15.sp, fontWeight = FontWeight.Bold)
+            Text(text = "🏠  NEW GAME", fontSize = 15.sp, fontWeight = FontWeight.Medium)
         }
     }
 }

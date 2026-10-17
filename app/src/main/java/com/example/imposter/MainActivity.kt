@@ -19,6 +19,7 @@ import com.example.imposter.ui.screens.DiscussionScreen
 import com.example.imposter.ui.screens.HomeScreen
 import com.example.imposter.ui.screens.HowToPlayScreen
 import com.example.imposter.ui.screens.ImposterRevealScreen
+import com.example.imposter.ui.screens.LandingScreen
 import com.example.imposter.ui.screens.PlayerCountScreen
 import com.example.imposter.ui.screens.PlayerNamesScreen
 import com.example.imposter.ui.screens.RevealScreen
@@ -51,7 +52,16 @@ fun ImposterApp(
     val navController = rememberNavController()
     val gameState = viewModel.gameState
 
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "landing") {
+        composable("landing") {
+            LandingScreen(
+                onTimeout = {
+                    navController.navigate("home") {
+                        popUpTo("landing") { inclusive = true }
+                    }
+                }
+            )
+        }
         composable("home") {
             HomeScreen(
                 onStartGameClick = { navController.navigate("player_count") },

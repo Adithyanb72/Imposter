@@ -13,6 +13,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.imposter.ui.theme.AppBackground
+import com.example.imposter.ui.theme.AppPrimary
+import com.example.imposter.ui.theme.AppSecondaryText
+import com.example.imposter.ui.theme.AppSurface
 
 @Composable
 fun HomeScreen(
@@ -21,55 +25,70 @@ fun HomeScreen(
     onSettingsClick: () -> Unit
 ) {
     val backgroundGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFF1F1F1F), Color(0xFF121212))
+        colors = listOf(AppBackground, Color(0xFF1F1F1F))
     )
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .background(backgroundGradient)
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "IMPOSTER",
-            color = Color.White,
-            style = MaterialTheme.typography.displayMedium,
-            letterSpacing = 4.sp
-        )
-        
-        Spacer(modifier = Modifier.height(8.dp))
-        
-        Text(
-            text = "ആരാണ് ഇംപോസ്റ്റർ?",
-            color = Color(0xFFFFD700),
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Medium
-        )
-        
-        Spacer(modifier = Modifier.height(24.dp))
-        
-        Text(
-            text = "ഒരാൾക്ക് വാക്ക് അറിയില്ല...\nഅവൻ ആരാണ്?",
-            color = Color.LightGray,
-            fontSize = 16.sp,
-            textAlign = TextAlign.Center,
-            lineHeight = 24.sp
-        )
-        
-        Spacer(modifier = Modifier.height(64.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Row {
+                Text(
+                    text = "IMPOS",
+                    color = Color.White,
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
+                )
+                Text(
+                    text = "TER",
+                    color = AppPrimary,
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            Text(
+                text = "ആരാണ് ഇംപോസ്റ്റർ?",
+                color = AppPrimary,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium
+            )
+            
+            Spacer(modifier = Modifier.height(20.dp))
+            
+            Text(
+                text = "ഒരാൾക്ക് വാക്ക് അറിയില്ല...\nഅവൻ ആരാണ്?",
+                color = AppSecondaryText,
+                fontSize = 15.sp,
+                textAlign = TextAlign.Center,
+                lineHeight = 22.sp
+            )
+            
+            Spacer(modifier = Modifier.height(56.dp))
 
-        MenuButton(text = "🎮 START GAME", onClick = onStartGameClick)
-        Spacer(modifier = Modifier.height(16.dp))
-        MenuButton(text = "📖 HOW TO PLAY", onClick = onHowToPlayClick)
-        Spacer(modifier = Modifier.height(16.dp))
-        MenuButton(text = "⚙ SETTINGS", onClick = onSettingsClick)
+            MenuButton(text = "🎮  START GAME", isPrimary = true, onClick = onStartGameClick)
+            Spacer(modifier = Modifier.height(16.dp))
+            MenuButton(text = "📖  HOW TO PLAY", isPrimary = false, onClick = onHowToPlayClick)
+            Spacer(modifier = Modifier.height(16.dp))
+            MenuButton(text = "⚙  SETTINGS", isPrimary = false, onClick = onSettingsClick)
+        }
     }
 }
 
 @Composable
-fun MenuButton(text: String, onClick: () -> Unit) {
+fun MenuButton(text: String, isPrimary: Boolean, onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -77,10 +96,16 @@ fun MenuButton(text: String, onClick: () -> Unit) {
             .height(56.dp),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFF25623),
-            contentColor = Color.White
-        )
+            containerColor = if (isPrimary) AppPrimary else AppSurface,
+            contentColor = if (isPrimary) AppBackground else Color.White
+        ),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = if (isPrimary) 8.dp else 2.dp)
     ) {
-        Text(text = text, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text = text,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            letterSpacing = 0.5.sp
+        )
     }
 }

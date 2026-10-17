@@ -1,5 +1,6 @@
 package com.example.imposter.ui.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -16,6 +17,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.imposter.model.Player
+import com.example.imposter.ui.theme.AppBackground
+import com.example.imposter.ui.theme.AppPrimary
+import com.example.imposter.ui.theme.AppSecondaryText
+import com.example.imposter.ui.theme.AppSurface
 
 @Composable
 fun RevealScreen(
@@ -28,7 +33,7 @@ fun RevealScreen(
     var showCardState by remember(player.id) { mutableStateOf(false) }
 
     val backgroundGradient = Brush.verticalGradient(
-        colors = listOf(Color(0xFF171717), Color(0xFF0F0F0F))
+        colors = listOf(AppBackground, Color(0xFF1F1F1F))
     )
 
     Column(
@@ -42,23 +47,24 @@ fun RevealScreen(
         if (!showCardState) {
             Text(
                 text = "🔒 SECRET CARD",
-                color = Color(0xFFF25623),
+                color = AppPrimary,
                 style = MaterialTheme.typography.headlineSmall
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = "Pass the phone to:",
-                color = Color.LightGray,
-                fontSize = 18.sp
+                color = AppSecondaryText,
+                fontSize = 16.sp
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Card(
                 shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF222222)),
+                colors = CardDefaults.cardColors(containerColor = AppSurface),
+                border = BorderStroke(1.dp, Color(0x33A2FF00)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
@@ -79,11 +85,11 @@ fun RevealScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Player $playerNumber of $totalPlayers",
-                color = Color.Gray,
+                color = AppSecondaryText,
                 fontSize = 14.sp
             )
 
-            Spacer(modifier = Modifier.height(64.dp))
+            Spacer(modifier = Modifier.height(56.dp))
 
             Button(
                 onClick = { showCardState = true },
@@ -91,24 +97,25 @@ fun RevealScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF25623))
+                colors = ButtonDefaults.buttonColors(containerColor = AppPrimary, contentColor = AppBackground)
             ) {
-                Text(text = "TAP TO REVEAL", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(text = "TAP TO REVEAL", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
         } else {
             Text(
                 text = "Player: ${player.name}",
-                color = Color.LightGray,
-                fontSize = 18.sp
+                color = AppSecondaryText,
+                fontSize = 16.sp
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Card(
                 shape = RoundedCornerShape(24.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (isRevealed && player.isImposter) Color(0xFFD32F2F) else Color(0xFF222222)
+                    containerColor = if (isRevealed && player.isImposter) Color(0xFFFF5252).copy(alpha = 0.2f) else AppSurface
                 ),
+                border = BorderStroke(1.dp, if (isRevealed && player.isImposter) Color(0xFFFF5252) else Color(0x33A2FF00)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(260.dp)
@@ -133,30 +140,30 @@ fun RevealScreen(
                             if (player.isImposter) {
                                 Text(
                                     text = "🚨 YOU ARE THE IMPOSTER 🚨",
-                                    color = Color.White,
-                                    fontSize = 26.sp,
+                                    color = Color(0xFFFF5252),
+                                    fontSize = 22.sp,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
                                     text = "Try to blend in and guess the secret word!",
-                                    color = Color.LightGray,
-                                    fontSize = 16.sp,
+                                    color = AppSecondaryText,
+                                    fontSize = 15.sp,
                                     textAlign = TextAlign.Center
                                 )
                             } else {
                                 Text(
                                     text = "YOUR SECRET WORD",
-                                    color = Color(0xFFF25623),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold
+                                    color = AppPrimary,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Medium
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
                                     text = player.word ?: "",
                                     color = Color.White,
-                                    fontSize = 48.sp,
+                                    fontSize = 42.sp,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center
                                 )
@@ -166,30 +173,30 @@ fun RevealScreen(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = "👆",
-                                fontSize = 48.sp
+                                fontSize = 42.sp
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = "HOLD TO REVEAL",
-                                color = Color.White,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
+                                color = AppPrimary,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Medium
                             )
                         }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
                 text = "Remember your role. Do not show others.",
-                color = Color.Gray,
+                color = AppSecondaryText,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = onNextPlayerClick,
@@ -197,9 +204,9 @@ fun RevealScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFF25623))
+                colors = ButtonDefaults.buttonColors(containerColor = AppPrimary, contentColor = AppBackground)
             ) {
-                Text(text = "HIDE & NEXT PLAYER", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                Text(text = "HIDE & NEXT PLAYER", fontSize = 16.sp, fontWeight = FontWeight.Medium)
             }
         }
     }
