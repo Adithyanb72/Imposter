@@ -110,10 +110,18 @@ fun ImposterApp(
                 playerCount = count,
                 initialNames = initialNames,
                 onStartGameClick = { playerNames ->
-                    viewModel.initializeGame(playerNames)
-                    navController.navigate("reveal") {
-                        popUpTo("home")
-                    }
+                    viewModel.initializeGame(
+                        playerNames = playerNames,
+                        language = settingsViewModel.selectedLanguage,
+                        includeBadWords = settingsViewModel.badWordsEnabled,
+                        category = settingsViewModel.selectedCategory,
+                        difficulty = settingsViewModel.selectedDifficulty,
+                        onReady = {
+                            navController.navigate("reveal") {
+                                popUpTo("home")
+                            }
+                        }
+                    )
                 }
             )
         }
@@ -124,6 +132,7 @@ fun ImposterApp(
                     player = currentPlayer,
                     playerNumber = gameState.currentPlayerIndex + 1,
                     totalPlayers = gameState.players.size,
+                    gameSessionId = gameState.gameSessionId,
                     onNextPlayerClick = {
                         viewModel.nextPlayerReveal()
                         if (viewModel.gameState.currentPhase == GamePhase.DISCUSSION) {
@@ -152,10 +161,17 @@ fun ImposterApp(
                 secretWord = gameState.secretWord,
                 imposterPlayer = imposter,
                 onStartAgain = {
-                    viewModel.restartWithSamePlayers()
-                    navController.navigate("reveal") {
-                        popUpTo("result") { inclusive = true }
-                    }
+                    viewModel.restartWithSamePlayers(
+                        language = settingsViewModel.selectedLanguage,
+                        includeBadWords = settingsViewModel.badWordsEnabled,
+                        category = settingsViewModel.selectedCategory,
+                        difficulty = settingsViewModel.selectedDifficulty,
+                        onReady = {
+                            navController.navigate("reveal") {
+                                popUpTo("result") { inclusive = true }
+                            }
+                        }
+                    )
                 },
                 onAddPlayers = {
                     val count = gameState.originalPlayerNames.size.coerceAtLeast(5)

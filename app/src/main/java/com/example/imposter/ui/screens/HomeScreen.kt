@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.imposter.ui.theme.AppBackground
@@ -60,7 +59,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(12.dp))
             
             Text(
-                text = "ആരാണ് ഇംപോസ്റ്റർ?",
+                text = "FIND THE IMPOSTER ?",
                 color = AppPrimary,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium
@@ -68,19 +67,11 @@ fun HomeScreen(
             
             Spacer(modifier = Modifier.height(20.dp))
             
-            Text(
-                text = "ഒരാൾക്ക് വാക്ക് അറിയില്ല...\nഅവൻ ആരാണ്?",
-                color = AppSecondaryText,
-                fontSize = 15.sp,
-                textAlign = TextAlign.Center,
-                lineHeight = 22.sp
-            )
-            
             Spacer(modifier = Modifier.height(56.dp))
 
-            MenuButton(text = "🎮  START GAME", isPrimary = true, onClick = onStartGameClick)
+            MenuButton(text = "START GAME", isPrimary = true, onClick = onStartGameClick)
             Spacer(modifier = Modifier.height(16.dp))
-            MenuButton(text = "📖  HOW TO PLAY", isPrimary = false, onClick = onHowToPlayClick)
+            MenuButton(text = "HOW TO PLAY", isPrimary = false, onClick = onHowToPlayClick)
             Spacer(modifier = Modifier.height(16.dp))
             MenuButton(text = "⚙  SETTINGS", isPrimary = false, onClick = onSettingsClick)
         }

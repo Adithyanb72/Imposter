@@ -26,5 +26,6 @@ data class GameState(
     val currentPhase: GamePhase = GamePhase.SETUP,
     val votes: Map<Int, Int> = emptyMap(), // voterId to votedPlayerId
     val winner: String? = null,
-    val originalPlayerNames: List<String> = emptyList()
+    val originalPlayerNames: List<String> = emptyList(),
+    val gameSessionId: Long = 0L
 )

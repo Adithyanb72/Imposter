@@ -24,36 +24,44 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         repository = GameRepository(wordDao)
     }
 
-    fun initializeGame(playerNames: List<String>) {
-        val imposterIndex = playerNames.indices.random()
-        val initialPlayers = playerNames.mapIndexed { index, name ->
-            Player(
-                id = index + 1,
-                name = name,
-                isImposter = (index == imposterIndex),
-                word = if (index == imposterIndex) null else "മാങ്ങ"
-            )
-        }
-
-        gameState = GameState(
-            players = initialPlayers,
-            currentPlayerIndex = 0,
-            secretWord = "മാങ്ങ",
-            imposterPlayerId = initialPlayers[imposterIndex].id,
-            currentPhase = GamePhase.REVEAL,
-            originalPlayerNames = playerNames
-        )
-
+    fun initializeGame(
+        playerNames: List<String>,
+        language: String = "Malayalam",
+        includeBadWords: Boolean = false,
+        category: String = "All",
+        difficulty: String = "Mixed",
+        onReady: () -> Unit = {}
+    ) {
         viewModelScope.launch {
-            val randomWordEntity = repository.getRandomWord()
-            val secretWord = randomWordEntity?.word ?: "മാങ്ങ"
-            val updatedPlayers = initialPlayers.map { player ->
-                if (player.isImposter) player else player.copy(word = secretWord)
+            val cat = if (category == "All") null else category
+            val diff = if (difficulty == "Mixed") null else difficulty
+            val randomWordEntity = repository.getRandomWord(category = cat, difficulty = diff, includeBadWords = includeBadWords)
+            val secretWord = if (language == "English") {
+                randomWordEntity.wordEn.ifEmpty { randomWordEntity.word.ifEmpty { "Mango" } }
+            } else {
+                randomWordEntity.word.ifEmpty { randomWordEntity.wordEn.ifEmpty { "മാങ്ങ" } }
             }
-            gameState = gameState.copy(
+
+            val imposterIndex = playerNames.indices.random()
+            val initialPlayers = playerNames.mapIndexed { index, name ->
+                Player(
+                    id = index + 1,
+                    name = name,
+                    isImposter = (index == imposterIndex),
+                    word = if (index == imposterIndex) null else secretWord
+                )
+            }
+
+            gameState = GameState(
+                players = initialPlayers,
+                currentPlayerIndex = 0,
                 secretWord = secretWord,
-                players = updatedPlayers
+                imposterPlayerId = initialPlayers[imposterIndex].id,
+                currentPhase = GamePhase.REVEAL,
+                originalPlayerNames = playerNames,
+                gameSessionId = System.currentTimeMillis()
             )
+            onReady()
         }
     }
 
@@ -73,9 +81,15 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         gameState = gameState.copy(currentPhase = GamePhase.IMPOSTER_REVEAL)
     }
 
-    fun restartWithSamePlayers() {
+    fun restartWithSamePlayers(
+        language: String = "Malayalam",
+        includeBadWords: Boolean = false,
+        category: String = "All",
+        difficulty: String = "Mixed",
+        onReady: () -> Unit = {}
+    ) {
         if (gameState.originalPlayerNames.isNotEmpty()) {
-            initializeGame(gameState.originalPlayerNames)
+            initializeGame(gameState.originalPlayerNames, language, includeBadWords, category, difficulty, onReady)
         }
     }
 }

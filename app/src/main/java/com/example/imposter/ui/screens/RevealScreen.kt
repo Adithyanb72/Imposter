@@ -27,10 +27,12 @@ fun RevealScreen(
     player: Player,
     playerNumber: Int,
     totalPlayers: Int,
+    gameSessionId: Long,
     onNextPlayerClick: () -> Unit
 ) {
-    var isRevealed by remember(player.id) { mutableStateOf(false) }
-    var showCardState by remember(player.id) { mutableStateOf(false) }
+    var isRevealed by remember(player.id, gameSessionId) { mutableStateOf(false) }
+    var showCardState by remember(player.id, gameSessionId) { mutableStateOf(false) }
+    var showWarning by remember(player.id, gameSessionId) { mutableStateOf(false) }
 
     val backgroundGradient = Brush.verticalGradient(
         colors = listOf(AppBackground, Color(0xFF1F1F1F))
@@ -68,6 +70,13 @@ fun RevealScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp)
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onPress = {
+                                showWarning = true
+                            }
+                        )
+                    }
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -89,10 +98,24 @@ fun RevealScreen(
                 fontSize = 14.sp
             )
 
-            Spacer(modifier = Modifier.height(56.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+
+            if (showWarning) {
+                Text(
+                    text = "⚠️ Please tap 'TAP TO REVEAL' below first!",
+                    color = Color(0xFFFF5252),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             Button(
-                onClick = { showCardState = true },
+                onClick = { 
+                    showCardState = true 
+                    showWarning = false
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -136,7 +159,11 @@ fun RevealScreen(
                         .padding(16.dp)
                 ) {
                     if (isRevealed) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxSize()
+                        ) {
                             if (player.isImposter) {
                                 Text(
                                     text = "🚨 YOU ARE THE IMPOSTER 🚨",
@@ -159,13 +186,26 @@ fun RevealScreen(
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium
                                 )
-                                Spacer(modifier = Modifier.height(16.dp))
+                                Spacer(modifier = Modifier.height(12.dp))
+                                val wordLength = player.word?.length ?: 0
+                                val dynFontSize = when {
+                                    wordLength > 12 -> 24.sp
+                                    wordLength > 8 -> 30.sp
+                                    else -> 38.sp
+                                }
+                                val dynLineHeight = when {
+                                    wordLength > 12 -> 32.sp
+                                    wordLength > 8 -> 38.sp
+                                    else -> 46.sp
+                                }
                                 Text(
                                     text = player.word ?: "",
                                     color = Color.White,
-                                    fontSize = 42.sp,
+                                    fontSize = dynFontSize,
                                     fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
+                                    textAlign = TextAlign.Center,
+                                    lineHeight = dynLineHeight,
+                                    modifier = Modifier.padding(horizontal = 8.dp)
                                 )
                             }
                         }

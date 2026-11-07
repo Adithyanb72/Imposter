@@ -61,8 +61,8 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         SettingDropdownItem(
-            title = "Language / ഭാഷ",
-            options = listOf("മലയാളം", "English"),
+            title = "Language",
+            options = listOf("English", "Malayalam"),
             selectedOption = language,
             onOptionSelected = onLanguageChanged
         )
@@ -70,7 +70,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         SettingSwitchItem(
-            title = "Sound Effects / ശബ്ദം",
+            title = "Sound Effects",
             checked = soundEnabled,
             onCheckedChange = onSoundChanged
         )
@@ -78,7 +78,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         SettingSwitchItem(
-            title = "Vibration / വൈബ്രേഷൻ",
+            title = "Vibration",
             checked = vibrationEnabled,
             onCheckedChange = onVibrationChanged
         )
@@ -86,7 +86,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         SettingSwitchItem(
-            title = "Discussion Timer / ചർച്ചാ ടൈമർ",
+            title = "Discussion Timer",
             checked = timerEnabled,
             onCheckedChange = onTimerChanged
         )
@@ -94,7 +94,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         SettingSwitchItem(
-            title = "Funny/Bad Words / തമാശ വാക്കുകൾ",
+            title = "Funny / Bad Words",
             checked = badWordsEnabled,
             onCheckedChange = onBadWordsChanged
         )
@@ -102,7 +102,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         SettingDropdownItem(
-            title = "Difficulty / ബുദ്ധിമുട്ട്",
+            title = "Difficulty",
             options = listOf("Easy", "Medium", "Hard", "Mixed"),
             selectedOption = difficulty,
             onOptionSelected = onDifficultyChanged
@@ -111,7 +111,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(12.dp))
 
         SettingDropdownItem(
-            title = "Category / വിഭാഗം",
+            title = "Category",
             options = listOf("All", "FOOD", "KERALA", "ANIMALS", "NATURE", "HOME", "TRANSPORT"),
             selectedOption = category,
             onOptionSelected = onCategoryChanged

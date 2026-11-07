@@ -45,15 +45,6 @@ fun PlayerCountScreen(
                 style = MaterialTheme.typography.displaySmall
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "എത്ര പേർ കളിക്കുന്നു?",
-                color = AppPrimary,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
-            )
-
             Spacer(modifier = Modifier.height(56.dp))
 
             // Counter Row
